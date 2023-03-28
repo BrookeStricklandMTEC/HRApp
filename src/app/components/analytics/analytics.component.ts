@@ -6,5 +6,8 @@ import { Component } from '@angular/core';
   styleUrls: ['./analytics.component.scss']
 })
 export class AnalyticsComponent {
+employees: any;
+weekdays: any;
+getTotalHours: any;
 
 }

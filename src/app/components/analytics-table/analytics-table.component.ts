@@ -67,10 +67,14 @@ export class AnalyticsTableComponent implements OnInit {
           wednesday: 5
       }
   ];
-
   constructor(){}
     ngOnInit(): void {
       this.employees = this.employeeData.filter(employee => employee.departmentId === this.departmentId);
   }
+
+  getTotalHours(employee: Employee): number {
+    return employee.monday + employee.tuesday + employee.wednesday
+        + employee.thursday + employee.friday + employee.saturday + employee.sunday;
+}
   
 }
