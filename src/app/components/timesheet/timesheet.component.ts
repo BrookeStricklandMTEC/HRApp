@@ -5,7 +5,7 @@ import { DepartmentsService } from 'src/app/services/departments.service';
 import { FormControl, ValidatorFn, AbstractControl } from '@angular/forms';
 import { EmployeeService } from 'src/app/services/employee.service';
 import { Employee } from 'src/app/interfaces/employee';
-import { Observable } from 'rxjs';
+import { Observable, switchMap, tap } from 'rxjs';
 
 
 
@@ -31,9 +31,16 @@ export class TimesheetComponent implements OnInit {
   ngOnInit(): void {
     this.$departments = this.departmentsServices.getDepartments();
 
-    this.$departments.subscribe(x => {
-      this.department = x.find(dept => dept.id === this.route.snapshot.params['id'])
-    });
+    this.$departments.pipe(
+      switchMap(departments => {
+        this.department = departments.find(dept => dept.id === this.route.snapshot.params['id'])
+        return this.employeeService.getEmployeeHoursByDepartment(this.department.id);
+      }),
+      tap(employees => {
+        this.employees = employees;
+      })
+    ).subscribe();
+    
   }
 
   addEmployee(): void {
