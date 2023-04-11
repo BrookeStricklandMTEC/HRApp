@@ -9,12 +9,23 @@ import { Observable, map } from 'rxjs';
 export class EmployeeService {
 
   constructor(
-    private db: AngularFirestore
+    private db: AngularFirestore // firebase 
   ) { }
 
   saveEmployeeHours(employee: Employee): any {
     this.db.collection('employee-hours').add(employee);
   }
+  // adds to firebase
+
+  updateEmployeeHours(employee: Employee): any {
+    this.db.collection('employee-hours').doc(employee.id).set(employee)
+  }
+  // updates from firebase
+
+  deleteEmployeeHours(employee: Employee): any {
+    this.db.collection('employee-hours').doc(employee.id).delete();
+  }
+  // deletes from firebase
 
   getEmployeeHoursByDepartment(departmentId: string): Observable<Employee[]> {
     const filteredEmployees = this.db.collection('employee-hours', ref => ref.where('departmentId', '==', departmentId));
@@ -38,4 +49,6 @@ export class EmployeeService {
         })
     );
 }
+
+
 }
